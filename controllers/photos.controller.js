@@ -6,18 +6,40 @@ exports.add = async (req, res) => {
   try {
     const { title, author, email } = req.fields;
     const file = req.files.file;
-    const fileName = file.path.split('/').slice(-1)[0]; // cut only filename from full path, e.g. C:/test/abc.jpg -> abc.jpg
-    const fileExtension = fileName.split('.').slice(-1)[0];
+
+    const titlePattern = new RegExp(
+      /(<\s*(strong|em)*>(([A-z]|\s)*)<\s*\/\s*(strong|em)>)|(([A-z]|\s|\.)*)/,
+      'g'
+    );
+    const titleMatched = text.match(titlePattern).join('');
+
+    const authorPattern = new RegExp(
+      /(<\s*(strong|em)*>(([A-z]|\s)*)<\s*\/\s*(strong|em)>)|(([A-z]|\s|\.)*)/,
+      'g'
+    );
+    const authorMatched = text.match(authorPattern).join('');
+
+    const emailPattern = new RegExp(
+      /(<\s*(strong|em)*>(([A-z]|\s)*)<\s*\/\s*(strong|em)>)|(([A-z]|\s|\.)*)/,
+      'g'
+    );
+    const emailMatched = text.match(emailPattern).join('');
+
+    const fileExtension = file.name.split('.').slice(-1);
 
     if (
       title &&
       author &&
       email &&
       file &&
-      (fileExtension === 'jpg' || 'png' || 'gif')
+      (fileExtension === 'jpg' || 'png' || 'gif') &&
+      titleMatched.length === title.length &&
+      authorMatched.length === author.length &&
+      emailMatched.length === email.length
     ) {
       // if fields are not empty...
 
+      const fileName = file.path.split('/').slice(-1)[0]; // cut only filename from full path, e.g. C:/test/abc.jpg -> abc.jpg
       const newPhoto = new Photo({
         title,
         author,
