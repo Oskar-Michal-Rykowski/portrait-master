@@ -13,20 +13,19 @@ exports.add = async (req, res) => {
       /(<\s*(strong|em)*>(([A-z]|\s)*)<\s*\/\s*(strong|em)>)|(([A-z]|\s|\.)*)/,
       'g'
     );
-    const titleMatched = text.match(titlePattern).join('');
+    const titleMatched = title.match(titlePattern).join('');
 
     const authorPattern = new RegExp(
       /(<\s*(strong|em)*>(([A-z]|\s)*)<\s*\/\s*(strong|em)>)|(([A-z]|\s|\.)*)/,
       'g'
     );
-    const authorMatched = text.match(authorPattern).join('');
+    const authorMatched = author.match(authorPattern).join('');
 
     const emailPattern = new RegExp(
-      /(<\s*(strong|em)*>(([A-z]|\s)*)<\s*\/\s*(strong|em)>)|(([A-z]|\s|\.)*)/,
-      'g'
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-    const emailMatched = text.match(emailPattern).join('');
-
+    const emailMatched = email.match(emailPattern)[0];
+    console.log(emailMatched);
     const fileExtension = file.name.split('.').slice(-1);
 
     if (
@@ -56,6 +55,7 @@ exports.add = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 };
 
